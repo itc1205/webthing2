@@ -10,9 +10,16 @@ TEMPLATE_PATH = 'templates'
 @app.route('/index')
 def index():
     params = {
-        'title': 'Main page'
+        'title': 'Main page',
+        'navbar_title': 'Миссия Колонизация Марса '
     }
     return render_template('index.html', **params)
+
+
+@app.route('/training/')
+@app.route('/training/<prof>')
+def training(prof):
+    pass
 
 
 if __name__ == '__main__':
