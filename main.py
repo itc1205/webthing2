@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, url_for
 
 app = Flask(__name__)
 
@@ -18,12 +18,14 @@ def index(title='Main_page'):
 
 @app.route('/training/')
 @app.route('/training/<prof>')
-def training(prof="врач".lower()):
+def training(prof="врач"):
+    prof = prof.lower().split()
     params = {
         'title': 'Main page',
         'navbar_title': 'Миссия Колонизация Марса',
         'prof': prof
     }
+    print(url_for(STATIC_PATH, filename='img/sci.png'))
     return render_template('training.html', **params)
 
 

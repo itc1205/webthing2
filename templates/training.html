@@ -7,5 +7,15 @@
 <h4>
     И на Марсе будут яблони цвести!
 </h4>
-{{}}
+{% if 'врач' in prof %}
+<h2>
+    Научные симуляторы
+</h2>
+<img src="/static/img/sci.png" alt="zero_thing">
+{% else %}
+<h2>
+    Инжинерные симуляторы
+</h2>
+<img src="/static/img/ing.png" alt="zero_thing">
+{% endif %}
 {% endblock %}
