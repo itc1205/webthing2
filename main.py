@@ -11,7 +11,7 @@ TEMPLATE_PATH = 'templates'
 def index(title='Main_page'):
     params = {
         'title': title,
-        'navbar_title': 'Миссия Колонизация Марса '
+        'navbar_title': 'Миссия Колонизация Марса'
     }
     return render_template('index.html', **params)
 
@@ -21,12 +21,27 @@ def index(title='Main_page'):
 def training(prof="врач"):
     prof = prof.lower().split()
     params = {
-        'title': 'Main page',
+        'title': 'zero_title',
         'navbar_title': 'Миссия Колонизация Марса',
         'prof': prof
     }
     print(url_for(STATIC_PATH, filename='img/sci.png'))
     return render_template('training.html', **params)
+
+
+@app.route('/list_prof/')
+@app.route('/list_prof/<list_type>')
+def list_prof(list_type="ul"):
+    if list_type not in ["ul", "ol"]:
+        list_type = "ul"
+    params = {
+        'title': 'zero_title',
+        'navbar_title': 'Миссия Колонизация Марса',
+        'list_type': list_type,
+        'prof_list': ['инженер-исследователь', 'пилот', 'строитель', 'экзобиолон', 'врач',
+                      'инжинер по терраформированию', 'климатоллог']
+    }
+    return render_template('list_prof.html', **params)
 
 
 if __name__ == '__main__':
