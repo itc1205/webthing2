@@ -13,7 +13,7 @@ def index(title='Main_page'):
         'title': title,
         'navbar_title': 'Миссия Колонизация Марса'
     }
-    return render_template('index.html', **params)
+    return render_template('base.html', **params)
 
 
 @app.route('/training/')
@@ -43,6 +43,23 @@ def list_prof(list_type="ul"):
     }
     return render_template('list_prof.html', **params)
 
+
+@app.route('/answer')
+@app.route('/auto_answer')
+def answer():
+    params = {
+        'title': 'zero_title',
+        'navbar_title': 'Миссия Колонизация Марса',
+        "surname": "Watny",
+        "name": "Mark",
+        "education": "выше среднего",
+        "profession": "штурман марсохода",
+        "sex": "male",
+        "motivation": "Всегда мечтал застрять на Марсе!",
+        "ready": "True"
+
+    }
+    return render_template('answer.html', **params)
 
 if __name__ == '__main__':
     app.run(port=8080, host='127.0.0.1')
