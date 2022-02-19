@@ -1,3 +1,5 @@
+from os import listdir
+
 from flask import Flask, render_template, url_for
 
 app = Flask(__name__)
@@ -6,12 +8,18 @@ STATIC_PATH = 'static'
 TEMPLATE_PATH = 'templates'
 
 
+def generate_links():
+    return list(map(lambda x: x.split('.')[0], listdir('templates')))
+
+
 @app.route('/')
+@app.route('/base')
 @app.route('/index/<title>')
 def index(title='Main_page'):
     params = {
         'title': title,
-        'navbar_title': 'Миссия Колонизация Марса'
+        'navbar_title': 'Миссия Колонизация Марса',
+        'hrefs': generate_links()
     }
     return render_template('base.html', **params)
 
@@ -23,7 +31,8 @@ def training(prof="врач"):
     params = {
         'title': 'zero_title',
         'navbar_title': 'Миссия Колонизация Марса',
-        'prof': prof
+        'prof': prof,
+        'hrefs': generate_links()
     }
     print(url_for(STATIC_PATH, filename='img/sci.png'))
     return render_template('training.html', **params)
@@ -39,7 +48,8 @@ def list_prof(list_type="ul"):
         'navbar_title': 'Миссия Колонизация Марса',
         'list_type': list_type,
         'prof_list': ['инженер-исследователь', 'пилот', 'строитель', 'экзобиолон', 'врач',
-                      'инжинер по терраформированию', 'климатоллог']
+                      'инжинер по терраформированию', 'климатоллог'],
+        'hrefs': generate_links()
     }
     return render_template('list_prof.html', **params)
 
@@ -56,7 +66,8 @@ def answer():
         "profession": "штурман марсохода",
         "sex": "male",
         "motivation": "Всегда мечтал застрять на Марсе!",
-        "ready": "True"
+        "ready": "True",
+        'hrefs': generate_links()
 
     }
     return render_template('answer.html', **params)
