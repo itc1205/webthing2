@@ -1,6 +1,6 @@
 from os import listdir
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 
 from loginform import LoginForm
 
@@ -8,12 +8,16 @@ app = Flask(__name__)
 
 STATIC_PATH = 'static'
 TEMPLATE_PATH = 'templates'
+USER_IMAGE_PATH = 'static/img/user_images'
 LIST_OF_DIRS = list(map(lambda x: x.split('.')[0], listdir('templates')))
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 
-
-def generate_links():
+def return_links():
     return LIST_OF_DIRS
+
+
+def return_images():
+    return list(map(lambda x: f'{USER_IMAGE_PATH}/{x}', listdir(USER_IMAGE_PATH)))
 
 
 @app.route('/')
@@ -23,7 +27,7 @@ def index(title='Главная страница'):
     params = {
         'title': title,
         'navbar_title': 'Миссия Колонизация Марса',
-        'hrefs': generate_links()
+        'hrefs': return_links()
     }
     return render_template('base.html', **params)
 
@@ -36,7 +40,7 @@ def training(prof="врач"):
         'title': 'Тренировка',
         'navbar_title': 'Миссия Колонизация Марса',
         'prof': prof,
-        'hrefs': generate_links()
+        'hrefs': return_links()
     }
     return render_template('training.html', **params)
 
@@ -52,7 +56,7 @@ def list_prof(list_type="ul"):
         'list_type': list_type,
         'prof_list': ['инженер-исследователь', 'пилот', 'строитель', 'экзобиолон', 'врач',
                       'инжинер по терраформированию', 'климатоллог'],
-        'hrefs': generate_links()
+        'hrefs': return_links()
     }
     return render_template('list_prof.html', **params)
 
@@ -70,7 +74,7 @@ def answer():
         "sex": "male",
         "motivation": "Всегда мечтал застрять на Марсе!",
         "ready": "True",
-        'hrefs': generate_links()
+        'hrefs': return_links()
 
     }
     return render_template('answer.html', **params)
@@ -82,7 +86,7 @@ def login():
     params = {
         'title': 'Логин',
         'navbar_title': 'Миссия Колонизация Марса',
-        'hrefs': generate_links()
+        'hrefs': return_links()
     }
     if form.validate_on_submit():
         for key in request.form.keys():
@@ -96,10 +100,28 @@ def distribution():
     params = {
         'title': 'Логин',
         'navbar_title': 'Миссия Колонизация Марса',
-        'hrefs': generate_links(),
+        'hrefs': return_links(),
         'list_of_ast': ['Ридли Скотт', 'Энди Уир', 'Марк Уотни', 'Венката Капур', 'Тедди Сандерс', 'Шон Бин']
     }
     return render_template('distribution.html', **params)
+
+
+@app.route('/gallery', methods=['POST', 'GET'])
+def gallery():
+    params = {
+        'title': 'Галлерея',
+        'navbar_title': 'Миссия Колонизация Марса',
+        'hrefs': return_links(),
+        'images': return_images()
+    }
+    if request.method == 'POST':
+        f = request.files['file']
+        file_img = f'{USER_IMAGE_PATH}/image_{len(params["images"]) + 1}.png'
+        with open(file_img, "wb") as file:
+            file.write(f.read())
+        return redirect(url_for("gallery"))
+    return render_template('gallery.html', **params)
+
 
 if __name__ == '__main__':
     app.run(port=8080, host='127.0.0.1')

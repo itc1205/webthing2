@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Размещение по каютам</h1>
+<h1 class="header1">Размещение по каютам</h1>
 {% for astronaut in list_of_ast %}
     {% if loop.first %}
-    <p>{{astronaut}} - Каюта № {{loop.index}} - капитан корабля</p>
+    <h4>{{astronaut}} - Каюта № {{loop.index}} - капитан корабля</h4>
     {% else %}
-    <p>{{astronaut}} - Каюта № {{loop.index}}</p>
+    <h4>{{astronaut}} - Каюта № {{loop.index}}</h4>
     {% endif %}
 {% endfor %}
 {% endblock %}
