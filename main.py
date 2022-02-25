@@ -19,7 +19,7 @@ def generate_links():
 @app.route('/')
 @app.route('/base')
 @app.route('/index/<title>')
-def index(title='Main_page'):
+def index(title='Главная страница'):
     params = {
         'title': title,
         'navbar_title': 'Миссия Колонизация Марса',
@@ -33,7 +33,7 @@ def index(title='Main_page'):
 def training(prof="врач"):
     prof = prof.lower().split()
     params = {
-        'title': 'zero_title',
+        'title': 'Тренировка',
         'navbar_title': 'Миссия Колонизация Марса',
         'prof': prof,
         'hrefs': generate_links()
@@ -47,7 +47,7 @@ def list_prof(list_type="ul"):
     if list_type not in ["ul", "ol"]:
         list_type = "ul"
     params = {
-        'title': 'zero_title',
+        'title': 'Лист с профессиями',
         'navbar_title': 'Миссия Колонизация Марса',
         'list_type': list_type,
         'prof_list': ['инженер-исследователь', 'пилот', 'строитель', 'экзобиолон', 'врач',
@@ -61,7 +61,7 @@ def list_prof(list_type="ul"):
 @app.route('/auto_answer/')
 def answer():
     params = {
-        'title': 'zero_title',
+        'title': 'Ответ',
         'navbar_title': 'Миссия Колонизация Марса',
         "surname": "Watny",
         "name": "Mark",
@@ -80,7 +80,7 @@ def answer():
 def login():
     form = LoginForm()
     params = {
-        'title': 'zero_title',
+        'title': 'Логин',
         'navbar_title': 'Миссия Колонизация Марса',
         'hrefs': generate_links()
     }
@@ -90,6 +90,16 @@ def login():
         return "<h1>Валидация прошла успешно!</h1>"
     return render_template('login.html', **params, form=form)
 
+
+@app.route('/distribution')
+def distribution():
+    params = {
+        'title': 'Логин',
+        'navbar_title': 'Миссия Колонизация Марса',
+        'hrefs': generate_links(),
+        'list_of_ast': ['Ридли Скотт', 'Энди Уир', 'Марк Уотни', 'Венката Капур', 'Тедди Сандерс', 'Шон Бин']
+    }
+    return render_template('distribution.html', **params)
 
 if __name__ == '__main__':
     app.run(port=8080, host='127.0.0.1')
