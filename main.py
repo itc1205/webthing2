@@ -1,15 +1,19 @@
 from os import listdir
 
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, request
+
+from loginform import LoginForm
 
 app = Flask(__name__)
 
 STATIC_PATH = 'static'
 TEMPLATE_PATH = 'templates'
+LIST_OF_DIRS = list(map(lambda x: x.split('.')[0], listdir('templates')))
+app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 
 
 def generate_links():
-    return list(map(lambda x: x.split('.')[0], listdir('templates')))
+    return LIST_OF_DIRS
 
 
 @app.route('/')
@@ -34,7 +38,6 @@ def training(prof="врач"):
         'prof': prof,
         'hrefs': generate_links()
     }
-    print(url_for(STATIC_PATH, filename='img/sci.png'))
     return render_template('training.html', **params)
 
 
@@ -54,8 +57,8 @@ def list_prof(list_type="ul"):
     return render_template('list_prof.html', **params)
 
 
-@app.route('/answer')
-@app.route('/auto_answer')
+@app.route('/answer/')
+@app.route('/auto_answer/')
 def answer():
     params = {
         'title': 'zero_title',
@@ -71,6 +74,22 @@ def answer():
 
     }
     return render_template('answer.html', **params)
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    params = {
+        'title': 'zero_title',
+        'navbar_title': 'Миссия Колонизация Марса',
+        'hrefs': generate_links()
+    }
+    if form.validate_on_submit():
+        for key in request.form.keys():
+            print(key, '-', request.form[key])
+        return "<h1>Валидация прошла успешно!</h1>"
+    return render_template('login.html', **params, form=form)
+
 
 if __name__ == '__main__':
     app.run(port=8080, host='127.0.0.1')
