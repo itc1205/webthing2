@@ -12,6 +12,8 @@ USER_IMAGE_PATH = 'static/img/user_images'
 LIST_OF_DIRS = list(map(lambda x: x.split('.')[0], listdir('templates')))
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 
+LIST_OF_DIRS.pop(LIST_OF_DIRS.index('antiignoregit'))
+
 def return_links():
     return LIST_OF_DIRS
 
