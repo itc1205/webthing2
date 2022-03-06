@@ -85,6 +85,7 @@ def answer():
         'hrefs': return_links()
 
     }
+
     return render_template('answer.html', **params)
 
 
@@ -96,10 +97,12 @@ def login():
         'navbar_title': 'Миссия Колонизация Марса',
         'hrefs': return_links()
     }
+
     if form.validate_on_submit():
         for key in request.form.keys():
             print(key, '-', request.form[key])
         return "<h1>Валидация прошла успешно!</h1>"
+
     return render_template('login.html', **params, form=form)
 
 
@@ -111,6 +114,7 @@ def distribution():
         'hrefs': return_links(),
         'list_of_ast': ['Ридли Скотт', 'Энди Уир', 'Марк Уотни', 'Венката Капур', 'Тедди Сандерс', 'Шон Бин']
     }
+
     return render_template('distribution.html', **params)
 
 
