@@ -1,4 +1,4 @@
-from os import listdir
+from os import listdir, mkdir
 
 from flask import Flask, render_template, request, redirect, url_for
 
@@ -9,17 +9,23 @@ app = Flask(__name__)
 STATIC_PATH = 'static'
 TEMPLATE_PATH = 'templates'
 USER_IMAGE_PATH = 'static/img/user_images'
-LIST_OF_DIRS = list(map(lambda x: x.split('.')[0], listdir('templates')))
+LIST_OF_TEMPLATES = list(map(lambda x: x.split('.')[0], listdir('templates')))
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 
-LIST_OF_DIRS.pop(LIST_OF_DIRS.index('antiignoregit'))
 
 def return_links():
-    return LIST_OF_DIRS
+    return LIST_OF_TEMPLATES
 
 
 def return_images():
-    return list(map(lambda x: f'{USER_IMAGE_PATH}/{x}', listdir(USER_IMAGE_PATH)))
+    try:
+        # creating list of urls for images in "static/img/user_images" or other USER_IMAGE_PATH
+        return list(map(lambda x: f'{USER_IMAGE_PATH}/{x}', listdir(USER_IMAGE_PATH)))
+    except FileNotFoundError as e:
+        mkdir(USER_IMAGE_PATH)
+        return []
+
+
 
 
 @app.route('/')
@@ -116,12 +122,17 @@ def gallery():
         'hrefs': return_links(),
         'images': return_images()
     }
+
     if request.method == 'POST':
+
         f = request.files['file']
         file_img = f'{USER_IMAGE_PATH}/image_{len(params["images"]) + 1}.png'
+
         with open(file_img, "wb") as file:
             file.write(f.read())
+
         return redirect(url_for("gallery"))
+
     return render_template('gallery.html', **params)
 
 
