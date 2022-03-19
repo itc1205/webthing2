@@ -26,8 +26,6 @@ def return_images():
         return []
 
 
-
-
 @app.route('/')
 @app.route('/base')
 @app.route('/index/<title>')
